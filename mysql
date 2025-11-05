@@ -1,0 +1,40 @@
+CREATE DATABASE library_db;
+USE library_db;
+
+CREATE TABLE Book (
+  Book_ID INT PRIMARY KEY AUTO_INCREMENT,
+  Title VARCHAR(100),
+  Author VARCHAR(100),
+  Publisher VARCHAR(100),
+  Price DECIMAL(8,2),
+  Category VARCHAR(50)
+);
+
+CREATE TABLE Member (
+  Member_ID INT PRIMARY KEY AUTO_INCREMENT,
+  Name VARCHAR(50),
+  Department VARCHAR(50),
+  Phone VARCHAR(15),
+  Email VARCHAR(100)
+);
+
+CREATE TABLE Staff (
+  Staff_ID INT PRIMARY KEY AUTO_INCREMENT,
+  Name VARCHAR(50),
+  Designation VARCHAR(50),
+  Contact_No VARCHAR(15)
+);
+
+CREATE TABLE Issue (
+  Issue_ID INT PRIMARY KEY AUTO_INCREMENT,
+  Book_ID INT,
+  Member_ID INT,
+  Staff_ID INT,
+  Issue_Date DATE,
+  Due_Date DATE,
+  Return_Date DATE,
+  Fine DECIMAL(6,2),
+  FOREIGN KEY (Book_ID) REFERENCES Book(Book_ID),
+  FOREIGN KEY (Member_ID) REFERENCES Member(Member_ID),
+  FOREIGN KEY (Staff_ID) REFERENCES Staff(Staff_ID)
+);
