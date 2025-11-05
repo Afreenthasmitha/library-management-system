@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Library Management System</title>
+  <style>
+    body { font-family: Arial; background: #f3f4f6; padding: 20px; }
+    h1 { color: #333; }
+    input, button { padding: 8px; margin: 5px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+  </style>
+</head>
+<body>
+  <h1>📚 Library Management System</h1>
+
+  <h3>Add Book</h3>
+  <input id="title" placeholder="Title" />
+  <input id="author" placeholder="Author" />
+  <input id="publisher" placeholder="Publisher" />
+  <input id="price" placeholder="Price" />
+  <input id="category" placeholder="Category" />
+  <button onclick="addBook()">Add Book</button>
+
+  <h3>Books List</h3>
+  <button onclick="loadBooks()">Show Books</button>
+  <table id="bookTable">
+    <thead><tr><th>ID</th><th>Title</th><th>Author</th><th>Publisher</th><th>Price</th><th>Category</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const API_URL = "http://localhost:5000";
+
+    async function loadBooks() {
+      const res = await fetch(`${API_URL}/books`);
+      const books = await res.json();
+      const table = document.querySelector("#bookTable tbody");
+      table.innerHTML = "";
+      books.forEach(b => {
+        table.innerHTML += `<tr>
+          <td>${b.Book_ID}</td>
+          <td>${b.Title}</td>
+          <td>${b.Author}</td>
+          <td>${b.Publisher}</td>
+          <td>${b.Price}</td>
+          <td>${b.Category}</td>
+        </tr>`;
+      });
+    }
+
+    async function addBook() {
+      const data = {
+        Title: document.getElementById("title").value,
+        Author: document.getElementById("author").value,
+        Publisher: document.getElementById("publisher").value,
+        Price: document.getElementById("price").value,
+        Category: document.getElementById("category").value
+      };
+      await fetch(`${API_URL}/books`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      alert("Book Added!");
+      loadBooks();
+    }
+  </script>
+</body>
+</html>
